@@ -1,13 +1,18 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+from .views import BlogDetailView, BlogListView
+from . import views
 
 urlpatterns = [
-    path('blogs/'),
-    path('blogs/<int:pk>'),
-    path('blogs/add/'),
-    path('blogs/update/<int:pk>'),
-    path('blogs/delete/<int:pk>'),
+    # public
+    path('blogs/', BlogListView.as_view()),
+    path('blogs/<int:pk>', BlogDetailView.as_view()),
+    # authenticated
+    path('blogs/add/', views.createBlog),
+    # authorized 
+    path('blogs/update/<int:pk>', views.updateBlog),
+    path('blogs/delete/<int:pk>', views.deleteBlog),
 ]
 
 if settings.DEBUG:
