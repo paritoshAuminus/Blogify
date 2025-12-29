@@ -13,20 +13,24 @@ class Blog(models.Model):
         return self.title
     
 
-class Likes(models.Model):
+class Like(models.Model):
     user = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
-    blog = models.OneToOneField(Blog, on_delete=models.CASCADE)
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         unique_together = ('user', 'blog')
 
-class Comments(models.Model):
+    def __str__(self):
+        return f'{self.user} - {self.blog}'
+
+class Comment(models.Model):
     user = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
     text = models.CharField(max_length=600)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.text[:50]
+        return f'{self.user} - {self.text[:50]}'
+    
 
