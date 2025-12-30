@@ -12,19 +12,19 @@ from rest_framework.generics import get_object_or_404
 @permission_classes([AllowAny])
 def registerview(request):
     username = request.data.get('username')
-    email= request.data.get('email')
+    requestemail= request.data.get('email')
     password = request.data.get('password')
 
-
-    if not username or not email or not password:
+    print('Email recieved', requestemail)
+    if not username or not requestemail or not password:
         return Response({'message: Username, email and password are required.'}, status=status.HTTP_400_BAD_REQUEST)
 
-    if User.objects.filter(email=email).exists():
-        return Response({'message': 'Email already in use.'}, status=status.HTTP_401_UNAUTHORIZED)
+    if User.objects.filter(email=requestemail).exists():
+        return Response({'message': 'Email already in use.'}, status=status.HTTP_409_CONFLICT)
 
     user = User.objects.create_user(
         username=username,  
-        email=email, 
+        email=requestemail, 
         password=password
     )
 

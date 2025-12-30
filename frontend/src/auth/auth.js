@@ -21,9 +21,17 @@ class AuthService {
                     password: password
                 })
             })
-            const result = await response.json()
-            await this.login({username: username, password: password})
-            return result
+            if (response.status === 400) {
+                return new Error(response.message)
+            }
+            if (response.status === 409) {
+                return new Error(response.message)
+            }
+            if (response.status === 201) {
+                const result = await response.json()
+                await this.login({username: username, password: password})
+                return result
+            }
         } catch (error) {
             console.log("AuthService error :: register ::", error)
         }
@@ -57,22 +65,37 @@ class AuthService {
     // Get User
     // ------------------------------------------------
     async getUser() {
-        const token = localStorage.getItem('blogifyAccess')
-        if (!token) return null
-        try {
-            const response = await fetch(`${BASE_URL}auth/getuser/`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'Application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            const result = await response.json()
-            return result
-        } catch (error) {
-            console.log("AuthService error :: getUser ::", error)
+    const token = localStorage.getItem('blogifyAccess')
+    if (!token) return null
+
+    let response = await fetch(`${BASE_URL}auth/getuser/`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`
         }
+    })
+
+    // Access token expired
+    if (response.status === 401) {
+        const refreshed = await this.refreshToken()
+        if (!refreshed?.access) {
+            await this.logout()
+            return null
+        }
+
+        // retry ORIGINAL request
+        const newToken = localStorage.getItem('blogifyAccess')
+        response = await fetch(`${BASE_URL}auth/getuser/`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${newToken}`
+            }
+        })
     }
+
+    return response.ok ? await response.json() : null
+}
+
 
     // ------------------------------------------------
     // Refresh Token
