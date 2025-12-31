@@ -95,6 +95,7 @@ def add_comment(request, pk):
 # [PUT] - Update comment
 @api_view(['PUT'])
 def edit_comment(request, pk, id):
+    blog = get_object_or_404(Blog, id=pk)
     comment = get_object_or_404(Comment, id=id)
     
     if request.user != comment.user:
@@ -111,8 +112,8 @@ def edit_comment(request, pk, id):
 # [DELETE] - Delete a comment (by blog author)
 @api_view(['DELETE'])
 def delete_comment(request, pk, id):
-    comment = get_object_or_404(Comment, id=id)
     blog = get_object_or_404(Blog, id=pk)
+    comment = get_object_or_404(Comment, id=id)
 
     if request.user != blog.author and request.user != comment.user:
         return Response({'message': 'Forbidden! You are not allowed to perform this operation.'}, status=status.HTTP_403_FORBIDDEN)
@@ -139,7 +140,7 @@ class ListLikes(ListAPIView):
 # [POST] - Toggle like for a blog
 @api_view(['POST'])
 def toggle_likes(request, pk):
-    blog = Blog.objects.get(id=pk)
+    blog = get_object_or_404(Blog, id=pk)
     serializer = LikeSerializer(data={})
 
     like = Like.objects.filter(blog=blog, user=request.user)

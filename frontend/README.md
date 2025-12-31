@@ -28,3 +28,15 @@
     dispatch(login({ user: {username: result.username, email: result.email} }))
   }
 ```
+
+# Service functions
+
+### updateBlog
+
+```js
+async function updateBlog() {
+    const result = await services.updateBlog({ id: 9, content: { title: 'Frontend technologies in 2023', body: 'Frontend technologies in 2023 is a blog about frontend technologies in 2023' } })
+}
+```
+
+> **Note:** We can send both title and body or either one of them

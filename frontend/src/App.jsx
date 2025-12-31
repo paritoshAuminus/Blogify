@@ -3,7 +3,7 @@ import BASE_URL from "./api/api"
 import { useEffect } from "react"
 import { login, logout } from './store/authSlice'
 import authService from "./auth/auth";
-import services from "./auth/service";
+import { commentServices, likeServices } from "./auth/service";
 
 // step 1 - Check if there is a token available
 // step 2 - If !token then login; if token then getUser
@@ -13,37 +13,35 @@ function App() {
   const status = useSelector(state => state.auth.status);
   const dispatch = useDispatch();
 
-  // const authTasks = async () => {
-  //   const access = localStorage.getItem('blogifyAccess')
-  //   const refresh = localStorage.getItem('blogifyRefresh')
-  //   if (!access && !refresh) {
-  //     dispatch(logout())
-  //     return
-  //   }
+  const authTasks = async () => {
+    const access = localStorage.getItem('blogifyAccess')
+    const refresh = localStorage.getItem('blogifyRefresh')
 
-  //   const result = await authService.getUser()
-  //   dispatch(login({ user: {username: result.username, email: result.email} }))
-  // }
+    if (!access && !refresh) {
+      dispatch(logout())
+      return
+    }
 
-  // useEffect(() => {
-  //   if (status === 'idle') {
-  //     authTasks()
-  //   }
-  // }, [status])
-
-  const getBlog = async () => {
-    
+    const result = await authService.getUser()
+    dispatch(login({ user: { username: result.username, email: result.email } }))
   }
 
   useEffect(() => {
-    getBlog()
-  }, [])
+    if (status === 'idle') {
+      authTasks()
+    }
+  }, [status])
+
+  const likesServices = async () => {
+    const result = await likeServices.toggleLike(21)
+    console.log(result)
+  }
 
   return (
     <>
-    <div>
-      <button className="flex justify-center items-center hover:cursor-pointer text-2xl text-amber-100 bg-amber-500 rounded-xl m-2 p-2">Signup</button>
-    </div>
+      <div>
+        <button onClick={likesServices} className="flex justify-center items-center hover:cursor-pointer text-2xl text-amber-100 bg-amber-500 rounded-xl m-2 p-2">Button</button>
+      </div>
     </>
   )
 }
