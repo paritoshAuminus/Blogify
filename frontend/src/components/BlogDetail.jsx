@@ -5,6 +5,7 @@ import { IoMdThumbsUp } from "react-icons/io"
 import { FaComments } from "react-icons/fa"
 import { useSelector } from "react-redux"
 import { blogServices, commentServices, likeServices } from "../auth/service"
+import { useForm } from "react-hook-form"
 
 function BlogDetail() {
     const { id } = useParams()
@@ -13,7 +14,6 @@ function BlogDetail() {
     const [commentLoading, setCommentLoading] = useState(true)
     const [comments, setComments] = useState([])
     const [addCommentLoading, setAddCommentLoading] = useState(false)
-    const [commentText, setCommentText] = useState('')
 
     const status = useSelector(state => state.auth.status);
 
@@ -23,10 +23,11 @@ function BlogDetail() {
         setBlog(res)
     }
 
-    const handleComment = async (e) => {
-        const res = await commentServices.addComment({blogId: id, content: commentText})
+    const handleComment = async (data) => {
+        const res = await commentServices.addComment({blogId: id, content: data.text})
         const commentRes = await commentServices.getComments(id)
         setComments(commentRes)
+        reset()
         setAddCommentLoading(false)
     }
 
@@ -47,6 +48,13 @@ function BlogDetail() {
         }
         fetchComments()
     }, [id])
+
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors, isSubmitting },
+    } = useForm()
 
     if (loading) return <div className="p-6">Loading blog...</div>
     if (!blog) return <div className="p-6">Blog not found</div>
@@ -152,11 +160,11 @@ function BlogDetail() {
 
                 {/* Comment Input */}
                 <form
+                    onSubmit={handleSubmit(handleComment)}
                     className="mb-6">
                     <textarea
                         disabled={!status}
-                        value={commentText}
-                        onChange={(e) => setCommentText(e.target.value)}
+                        {...register("text", { required: 'Comment cannot be empty' })}                        
                         placeholder={
                             status ? "Write a comment..." : "Login to write a comment"
                         }
@@ -167,7 +175,7 @@ function BlogDetail() {
                             `}
                         rows={3}
                     />
-
+                    {errors.text?.message && <p className="text-red-500 text-sm font-semiboldmt-1">{errors.text.message}</p>}
                     <div className="flex justify-end mt-2">
                         <button
                             type="submit"
@@ -179,12 +187,11 @@ function BlogDetail() {
                                     `}
                         >
                             <MdOutlineComment size={18} />
-                            {addCommentLoading ? "Commenting..." : "Comment"}
+                            {isSubmitting ? "Commenting..." : "Comment"}
                         </button>
                     </div>
                 </form>
             </div>
-
         </div>
     )
 }

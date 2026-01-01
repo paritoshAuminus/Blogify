@@ -4,7 +4,7 @@ import { login, logout } from './store/authSlice'
 import authService from "./auth/auth";;
 import { BlogDetail, Header } from "./components";
 import { Route, Routes } from "react-router-dom";
-import { Blogs, MyBlogs, Login } from "./pages";
+import { Blogs, MyBlogs, Login, Signup } from "./pages";
 import ProtectedRoutes from './routes/ProtectedRoutes';
 
 // step 1 - Check if there is a token available
@@ -50,6 +50,7 @@ function App() {
           }
         />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
       </Routes>
     </>
   )
