@@ -26,6 +26,13 @@ class BlogDetailView(RetrieveAPIView):
     permission_classes = [AllowAny]
 
 
+# [GET] - get one user's blogs (authenticated)
+def my_blogs(request):
+    blogs = Blog.objects.all()
+    userblogs = blogs.filter(blogs.author == request.user)
+    serializer = BlogSerializer(data=userblogs, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
 # [POST] - request(blog data) - authentication(JWT) - response(Blog created)
 @api_view(['POST'])
 def create_blog(request):

@@ -1,6 +1,4 @@
 from django.urls import path
-from django.conf import settings
-from django.conf.urls.static import static
 from .views import BlogDetailView, BlogListView, ListComments, ListLikes
 from . import views
 
@@ -11,6 +9,7 @@ urlpatterns = [
     path('blogs/<int:pk>/', BlogDetailView.as_view()),
     # authenticated
     path('blogs/add/', views.create_blog),
+    path('blogs/myblogs/', views.my_blogs),
     # authorized 
     path('blogs/update/<int:pk>/', views.update_blog),
     path('blogs/delete/<int:pk>/', views.delete_blog),
@@ -28,9 +27,3 @@ urlpatterns = [
     # authenticated
     path('blogs/<int:pk>/likes/toggle/', views.toggle_likes)
 ]
-
-if settings.DEBUG:
-    urlpatterns += static(
-        settings.MEDIA_URL,
-        document_root=settings.MEDIA_ROOT
-    )

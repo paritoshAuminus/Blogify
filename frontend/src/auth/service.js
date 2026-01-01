@@ -309,7 +309,6 @@ class LikeServices {
                     'Authorization': `Bearer ${localStorage.getItem('blogifyAccess')}`
                 }
             })
-            // const result = await response.json()
 
             if (response.status === 404) {
                 return new Error(response.statusText)
