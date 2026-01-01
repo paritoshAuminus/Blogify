@@ -10,7 +10,7 @@ function ProtectedRoutes({ children }) {
 
     if (status === "idle" || status === "loading") {
         return (
-            <div>Loading</div>
+            <div>Loading...</div>
         )
     }
 

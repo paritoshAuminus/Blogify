@@ -4,7 +4,7 @@ import { MdOutlineComment } from "react-icons/md"
 import { IoMdThumbsUp } from "react-icons/io"
 import { FaComments } from "react-icons/fa"
 import { useSelector } from "react-redux"
-import { blogServices, commentServices } from "../auth/service"
+import { blogServices, commentServices, likeServices } from "../auth/service"
 
 function BlogDetail() {
     const { id } = useParams()
@@ -12,8 +12,23 @@ function BlogDetail() {
     const [loading, setLoading] = useState(true)
     const [commentLoading, setCommentLoading] = useState(true)
     const [comments, setComments] = useState([])
+    const [addCommentLoading, setAddCommentLoading] = useState(false)
+    const [commentText, setCommentText] = useState('')
 
     const status = useSelector(state => state.auth.status);
+
+    const handleLike = async () => {
+        await likeServices.toggleLike(id)
+        const res = await blogServices.getBlog(id)
+        setBlog(res)
+    }
+
+    const handleComment = async (e) => {
+        const res = await commentServices.addComment({blogId: id, content: commentText})
+        const commentRes = await commentServices.getComments(id)
+        setComments(commentRes)
+        setAddCommentLoading(false)
+    }
 
     useEffect(() => {
         const fetchBlog = async () => {
@@ -31,8 +46,7 @@ function BlogDetail() {
             setCommentLoading(false)
         }
         fetchComments()
-    }, [])
-
+    }, [id])
 
     if (loading) return <div className="p-6">Loading blog...</div>
     if (!blog) return <div className="p-6">Blog not found</div>
@@ -54,9 +68,10 @@ function BlogDetail() {
 
                 <button
                     disabled={!status}
+                    onClick={handleLike}
                     className={`flex items-center gap-2 text-gray-700 transition
-      ${status ? 'hover:text-blue-600 cursor-pointer' : 'opacity-50 cursor-not-allowed'}
-    `}
+                ${status ? 'hover:text-blue-600 cursor-pointer' : 'opacity-50 cursor-not-allowed'}
+                `}
                 >
                     <IoMdThumbsUp size={22} />
                     <span className="text-sm">{blog.likes_count}</span>
@@ -64,7 +79,7 @@ function BlogDetail() {
             </div>
 
             <p className="text-sm text-gray-500 mb-6">
-                {`By ${blog.author} on 
+                {`By ${blog.author_username} on 
                 ${new Date(blog.created_at).toLocaleDateString("en-IN", {
                     day: "numeric",
                     month: "short",
@@ -100,7 +115,7 @@ function BlogDetail() {
                                     {/* Author + date */}
                                     <div className="flex items-center gap-3 text-sm mb-1">
                                         <span className="font-semibold text-[#0F2854]">
-                                            {comment.user}
+                                            {comment.username}
                                         </span>
                                         <span className="text-gray-400 text-xs">
                                             {new Date(comment.created_at).toLocaleDateString("en-IN", {
@@ -136,9 +151,12 @@ function BlogDetail() {
                 </div>
 
                 {/* Comment Input */}
-                <div className="mb-6">
+                <form
+                    className="mb-6">
                     <textarea
                         disabled={!status}
+                        value={commentText}
+                        onChange={(e) => setCommentText(e.target.value)}
                         placeholder={
                             status ? "Write a comment..." : "Login to write a comment"
                         }
@@ -152,18 +170,19 @@ function BlogDetail() {
 
                     <div className="flex justify-end mt-2">
                         <button
-                            disabled={!status}
+                            type="submit"
+                            disabled={!status || addCommentLoading}
                             className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm
                                     ${status
-                                    ? "bg-[#1C4D8D] text-white hover:bg-[#4988C4]"
+                                    ? "bg-[#1C4D8D] text-white hover:bg-[#4988C4] cursor-pointer"
                                     : "bg-gray-300 text-gray-600 cursor-not-allowed"}
                                     `}
                         >
                             <MdOutlineComment size={18} />
-                            Comment
+                            {addCommentLoading ? "Commenting..." : "Comment"}
                         </button>
                     </div>
-                </div>
+                </form>
             </div>
 
         </div>

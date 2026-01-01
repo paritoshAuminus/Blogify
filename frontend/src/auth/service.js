@@ -54,6 +54,29 @@ class BlogServices {
     }
 
     //-----------------------------------------------
+    // Get Blogs (Public)
+    //-----------------------------------------------
+    async getMyBlogs() {
+        try {
+            const response = await fetch(`${BASE_URL}api/blogs/myblogs/`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'Application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('blogifyAccess')}`
+                }
+            })            
+            if (response.status === 200) {
+                const result = await response.json()
+                return result
+            } else {
+                return new Error(response.statusText)
+            }
+        } catch (error) {
+            console.log("Services error :: getMyBlogs ::", error)
+        }
+    }
+
+    //-----------------------------------------------
     // Add blog (authenticated)
     //-----------------------------------------------
     async addBlog({ title, body }) {

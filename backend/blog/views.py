@@ -27,11 +27,13 @@ class BlogDetailView(RetrieveAPIView):
 
 
 # [GET] - get one user's blogs (authenticated)
+@api_view(['GET'])
 def my_blogs(request):
     blogs = Blog.objects.all()
-    userblogs = blogs.filter(blogs.author == request.user)
-    serializer = BlogSerializer(data=userblogs, many=True)
+    myblogs = blogs.filter(author=request.user)
+    serializer = BlogSerializer(myblogs, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 # [POST] - request(blog data) - authentication(JWT) - response(Blog created)
 @api_view(['POST'])
