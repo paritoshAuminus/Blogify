@@ -64,7 +64,7 @@ class BlogServices {
                     'Content-Type': 'Application/json',
                     'Authorization': `Bearer ${localStorage.getItem('blogifyAccess')}`
                 }
-            })            
+            })
             if (response.status === 200) {
                 const result = await response.json()
                 return result
@@ -79,7 +79,11 @@ class BlogServices {
     //-----------------------------------------------
     // Add blog (authenticated)
     //-----------------------------------------------
-    async addBlog({ title, body }) {
+    async addBlog({ title, image, body }) {
+        blog = {};
+        if (title) blog.title = title;
+        if (image) blog.image = image;
+        if (body) blog.body = body;
         try {
             const response = await fetch(`${BASE_URL}api/blogs/add/`, {
                 method: 'POST',
@@ -87,10 +91,7 @@ class BlogServices {
                     'Content-Type': 'Application/json',
                     'Authorization': `Bearer ${localStorage.getItem('blogifyAccess')}`
                 },
-                body: JSON.stringify({
-                    title: title,
-                    body: body
-                })
+                body: JSON.stringify({ blog })
             })
             if (response.status === 400) {
                 return new Error(response.statusText)
@@ -176,7 +177,7 @@ class BlogServices {
 //---------------------------------------------------
 
 class CommentServices {
-    
+
     //-----------------------------------------------
     // Get comments (Public)
     //-----------------------------------------------

@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import authService from "../auth/auth";
 
 const authSlice = createSlice({
     name: "auth",
@@ -14,7 +15,8 @@ const authSlice = createSlice({
         logout: (state) => {
             state.status = "unauthenticated"; 
             state.user = null;
-        },
+            authService.logout();
+        }
     },
 });
 

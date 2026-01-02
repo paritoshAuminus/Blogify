@@ -4,7 +4,7 @@ import { login, logout } from './store/authSlice'
 import authService from "./auth/auth";;
 import { BlogDetail, Header } from "./components";
 import { Route, Routes } from "react-router-dom";
-import { Blogs, MyBlogs, Login, Signup } from "./pages";
+import { Blogs, MyBlogs, Login, Signup, Home, Account, NotFound } from "./pages";
 import ProtectedRoutes from './routes/ProtectedRoutes';
 
 // step 1 - Check if there is a token available
@@ -38,7 +38,7 @@ function App() {
     <>
       <Header />
       <Routes>
-        {/* <Route path="/" element={<Blogs />} /> */}
+        <Route path="/" element={<Home />} />
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/blogs/:id" element={<BlogDetail />} />
         <Route
@@ -51,6 +51,20 @@ function App() {
         />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        {/* <Route
+          path="/create-blog"
+          element={
+            <ProtectedRoutes>
+              <AddBlog />
+            </ProtectedRoutes>
+          }
+        /> */}
+        <Route path="/account" element={
+          <ProtectedRoutes>
+            <Account />
+          </ProtectedRoutes>
+        } />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   )
