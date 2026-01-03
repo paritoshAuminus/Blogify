@@ -1,11 +1,13 @@
 import { useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router-dom"
 import authService from '../auth/auth'
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../store/authSlice";
 
 function Login() {
 
     const status = useSelector(state => state.auth.status);
+    const dispatch = useDispatch()
 
     const {
         handleSubmit,
@@ -16,8 +18,10 @@ function Login() {
     const navigate = useNavigate()
 
     const submitform = async (data) => {
-        const res = await authService.login({ username: data.username, password: data.password })
-        if (res) {
+        const { loginResult, getUserResult } = await authService.login({ username: data.username, password: data.password })
+
+        if (getUserResult) {
+            dispatch(login({ user: { username: getUserResult.username, email: getUserResult.email } }))
             navigate('/')
         }
     }
@@ -99,7 +103,7 @@ function Login() {
                     <button
                         type="submit"
                         className="w-full bg-[#1C4D8D] text-white py-2 rounded-md
-                       hover:bg-[#4988C4] transition font-medium"
+                       hover:bg-[#4988C4] transition font-medium cursor-pointer"
                     >
                         {isSubmitting ? 'Logging in' : 'Login'}
                     </button>
@@ -107,7 +111,7 @@ function Login() {
 
                 {/* Footer */}
                 <div className="mt-6 text-center text-sm text-gray-600">
-                    Don’t have an account?{" "}
+                    Don't have an account?{" "}
                     <Link
                         to="/signup"
                         className="text-[#1C4D8D] font-medium hover:underline"

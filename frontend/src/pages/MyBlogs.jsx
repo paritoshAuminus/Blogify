@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { FaPen, FaTrash } from "react-icons/fa"
 import { blogServices } from "../auth/service"
+import BASE_URL from "../api/api"
 
 function MyBlogs() {
     const [blogs, setBlogs] = useState([])
@@ -68,7 +69,7 @@ function MyBlogs() {
                         {/* Image */}
                         {blog.image && (
                             <img
-                                src={blog.image}
+                                src={`${BASE_URL}${blog.image}`}
                                 alt={blog.title}
                                 className="w-40 h-28 object-cover rounded-md"
                             />
@@ -83,6 +84,7 @@ function MyBlogs() {
                                     text-[#0F2854]
                                     hover:text-[#1C4D8D]
                                     transition
+                                    hover:underline
                                 "
                             >
                                 {blog.title}
@@ -102,7 +104,8 @@ function MyBlogs() {
 
                             {/* Actions */}
                             <div className="flex gap-6 mt-4 text-sm">
-                                <div
+                                <Link 
+                                    to={`/edit-blog/${blog.id}`}
                                     className="
                                         flex items-center gap-2
                                         text-[#1C4D8D]
@@ -113,7 +116,7 @@ function MyBlogs() {
                                 >
                                     <FaPen />
                                     Edit
-                                </div>
+                                </Link>
 
                                 <button
                                     className="

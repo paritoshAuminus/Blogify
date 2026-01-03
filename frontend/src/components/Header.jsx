@@ -10,32 +10,8 @@ import { useEffect } from "react";
 import authService from "../auth/auth";
 
 function Header() {
+  
   const status = useSelector(state => state.auth.status)
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    const hydrateAuth = async () => {
-
-      const access = localStorage.getItem("blogifyAccess")
-      const refresh = localStorage.getItem("blogifyRefresh")
-
-      if (!access && !refresh) {
-        dispatch(logout())
-        return
-      }
-
-      const user = await authService.getUser()
-
-      if (user) {
-        dispatch(login({ user }))
-      } else {
-        dispatch(logout())
-      }
-    }
-
-    hydrateAuth()
-  }, [])
-
 
   return (
     <header className="bg-[#0F2854] text-white">

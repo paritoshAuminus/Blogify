@@ -1,0 +1,136 @@
+import React, { useEffect, useState } from "react"
+import { IoIosCloudUpload } from "react-icons/io";
+import { Editor } from '@tinymce/tinymce-react';
+import { Link, useParams } from "react-router-dom";
+import { blogServices } from '../auth/service'
+
+function AddBlog() {
+    const { id } = useParams()
+
+    const [edit, setEdit] = useState(false);
+    const [title, setTitle] = useState('');
+    const [image, setImage] = useState();
+    const [body, setBody] = useState('');
+
+    useEffect(() => {
+        const handleEdit = async () => {
+            if (id) {
+                setEdit(true);
+                const res = await blogServices.getBlog(id);
+                console.log(res)
+                setTitle(res.title);
+                setImage(res.image);
+                setBody(res.body);
+            }
+        }
+        handleEdit();
+    }, [])
+
+    const updateBlog = (e) => {
+        e.preventDefault()
+        console.log(title)
+        console.log(image)
+        console.log(body)
+    }
+
+
+    return (
+        <div className="min-h-screen bg-gray-100 py-10 px-4">
+            <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-md p-8">
+
+                {/* Page Title */}
+                <h1 className="text-2xl font-semibold text-gray-800 mb-6">
+                    {edit ? "Edit Blog" : "Create New Blog"}
+                </h1>
+
+                {/* Form */}
+                <form onSubmit={updateBlog} className="space-y-6">
+
+                    {/* Title */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Blog Title
+                        </label>
+                        <input
+                            type="text"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            placeholder="Enter blog title"
+                            className="w-full px-4 py-3 rounded-lg border border-gray-300 
+                         focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
+
+                    {/* Image URL */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Cover Image URL
+                        </label>
+                        <div className="w-full px-4 py-3 rounded-lg border border-gray-300 
+                         focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center justify-between bg-emerald-100">
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => setImage(e.target.files[0])}
+                                className="text-emerald-400 cursor-pointer hover:font-semibold"
+                            />
+                            <IoIosCloudUpload className="text-emerald-400" />
+                        </div>
+                    </div>
+
+                    {/* Image Preview */}
+                    <div className="border rounded-lg bg-gray-50 h-48 w-96 flex items-center justify-center text-gray-400 text-sm">
+                        {Image ?
+                            <img
+                                src={image && image}
+                                alt="Preview"
+                                className="w-full h-full object-cover"
+                            />
+                            : "Image preview"
+                        }
+                    </div>
+
+                    {/* Body */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Blog Content
+                        </label>
+                        <Editor
+                            apiKey='ok3femhgsts0hm5y14ohjxs1ye1thr1wzqwc1v08ewt3y7d7'
+                            init={{
+                                plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+                                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                            }}
+                            value={body}
+                            onEditorChange={(content) => {
+                                setBody(content);
+                            }}
+                        />
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex justify-end gap-4 pt-4">
+                        <Link to={'/my-blogs'}
+                            type="reset"
+                            className="px-6 py-2 rounded-lg border border-gray-300 text-gray-700 
+                         hover:bg-gray-100 transition"
+                        >
+                            Cancel
+                        </Link>
+
+                        <button
+                            type="submit"
+                            className="px-6 py-2 rounded-lg bg-blue-600 text-white 
+                         hover:bg-blue-700 transition"
+                        >
+                            {edit ? "Update Blog" : "Publish Blog"}
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    )
+}
+
+export default AddBlog

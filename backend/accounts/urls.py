@@ -9,4 +9,5 @@ urlpatterns = [
     path('register/', views.registerview, name='register'),
     # authorized
     path('getuser/', views.getUser, name='getUser'),
+    path('update_profile/<int:pk>/', views.update_user)
 ]

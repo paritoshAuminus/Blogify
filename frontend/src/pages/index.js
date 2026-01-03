@@ -5,5 +5,6 @@ import Signup from "./Signup";
 import Home from "./Home";
 import Account from "./Account";
 import NotFound from "./NotFound";
+import EditProfile from "./EditProfile";
 
-export { Blogs, MyBlogs, Login, Signup, Home, Account, NotFound };
+export { Blogs, MyBlogs, Login, Signup, Home, Account, NotFound, EditProfile };

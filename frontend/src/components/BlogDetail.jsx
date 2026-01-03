@@ -14,8 +14,8 @@ function BlogDetail() {
     const [commentLoading, setCommentLoading] = useState(true)
     const [comments, setComments] = useState([])
     const [addCommentLoading, setAddCommentLoading] = useState(false)
-
-    const status = useSelector(state => state.auth.status)
+    const status = useSelector((state) => state.auth.status)
+    const user = useSelector((state) => state.auth.user)
 
     const handleLike = async () => {
         await likeServices.toggleLike(id)
@@ -55,6 +55,10 @@ function BlogDetail() {
         reset,
         formState: { errors, isSubmitting },
     } = useForm()
+
+    const editBlog = () => {
+        window.location.href = `/edit-blog/${id}`
+    }
 
     if (loading) {
         return (
@@ -114,6 +118,15 @@ function BlogDetail() {
                             year: "numeric",
                         })}
                     </p>
+
+                    {user?.username === blog.author_username && (
+                        <button
+                            onClick={editBlog}
+                            className="text-sm font-medium text-[#4988C4]"
+                        >
+                            Edit
+                        </button>
+                    )}
                 </div>
 
                 {/* Body */}

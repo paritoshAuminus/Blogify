@@ -1,7 +1,7 @@
 import { FaUserCircle } from "react-icons/fa"
 import { logout } from "../store/authSlice"
 import { useDispatch, useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 function Account() {
 
@@ -46,12 +46,12 @@ function Account() {
 
                 {/* Actions */}
                 <div className="flex flex-col gap-3">
-                    <button
+                    <Link to="/edit-profile"
                         className="w-full bg-[#1C4D8D] text-white py-2 rounded-md
-                       hover:bg-[#4988C4] transition font-medium curosor-pointer"
+                       hover:bg-[#4988C4] transition font-medium cursor-pointer text-center"
                     >
                         Edit Profile
-                    </button>
+                    </Link>
 
                     <button onClick={handleLogout}
                         className="w-full border border-red-500 text-red-500 py-2 rounded-md
