@@ -6,6 +6,12 @@ import { FaComments } from "react-icons/fa"
 import { useSelector } from "react-redux"
 import { blogServices, commentServices, likeServices } from "../auth/service"
 import { useForm } from "react-hook-form"
+import DeletePopup from "./DeletePopup"
+
+const handleDelete = async () => {
+    // await blogServices.deleteBlog(id)
+    window.location.href = "/blogs"
+}
 
 function BlogDetail() {
     const { id } = useParams()
@@ -14,6 +20,8 @@ function BlogDetail() {
     const [commentLoading, setCommentLoading] = useState(true)
     const [comments, setComments] = useState([])
     const [addCommentLoading, setAddCommentLoading] = useState(false)
+    const [deleteOpen, setDeleteOpen] = useState(false)
+
     const status = useSelector((state) => state.auth.status)
     const user = useSelector((state) => state.auth.user)
 
@@ -60,6 +68,10 @@ function BlogDetail() {
         window.location.href = `/edit-blog/${id}`
     }
 
+    const deleteBlog = () => {
+        setDeleteOpen(true)
+    }
+
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-[#BDE8F5]">
@@ -88,46 +100,69 @@ function BlogDetail() {
 
                 {/* Header */}
                 <div className="bg-white rounded-xl p-6 shadow-sm mb-8">
-                    <div className="flex justify-between items-start gap-4 mb-3">
-                        <h1 className="text-3xl font-bold text-[#0F2854] leading-tight">
-                            {blog.title}
-                        </h1>
+                    <div className="flex justify-between items-stretch gap-6">
+                        {/* Left content */}
+                        <div>
+                            <h1 className="text-3xl font-bold text-[#0F2854] leading-tight mb-3">
+                                {blog.title}
+                            </h1>
 
-                        <button
-                            disabled={!status}
-                            onClick={handleLike}
-                            className={`
-                                flex items-center gap-2 text-sm font-medium
-                                transition
-                                ${status === "authenticated"
-                                    ? "text-[#1C4D8D] hover:text-[#4988C4] cursor-pointer"
-                                    : "opacity-50 cursor-not-allowed"}
-                            `}
-                        >
-                            <IoMdThumbsUp size={22} />
-                            {blog.likes_count}
-                        </button>
+                            <p className="text-sm text-[#4988C4]">
+                                By <span className="font-medium">{blog.author_username}</span>{" "}
+                                on{" "}
+                                {new Date(blog.created_at).toLocaleDateString("en-IN", {
+                                    day: "numeric",
+                                    month: "short",
+                                    year: "numeric",
+                                })}
+                            </p>
+                        </div>
+
+                        {/* Right actions */}
+                        <div className="flex flex-col justify-between items-end">
+                            {/* Like button (TOP) */}
+                            <button
+                                disabled={status !== "authenticated"}
+                                onClick={handleLike}
+                                className={`
+                                        flex items-center gap-2 text-base font-medium transition
+                                        ${status === "authenticated"
+                                        ? "text-[#1C4D8D] hover:text-[#4988C4]"
+                                        : "opacity-50 cursor-not-allowed"}
+                                `}
+                            >
+                                <IoMdThumbsUp size={22} />
+                                {blog.likes_count}
+                            </button>
+
+                            {/* Edit / Delete (BOTTOM) */}
+                            {user?.id === blog.author && (
+                                <div className="flex items-center gap-4">
+                                    <button
+                                        onClick={editBlog}
+                                        className="text-sm font-medium text-[#4988C4] hover:text-[#1C4D8D] transition cursor-pointer"
+                                    >
+                                        Edit
+                                    </button>
+
+                                    <button
+                                        onClick={deleteBlog}
+                                        className="text-sm font-medium text-red-500 hover:text-red-600 transition cursor-pointer"
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                     </div>
-
-                    <p className="text-sm text-[#4988C4]">
-                        By <span className="font-medium">{blog.author_username}</span>{" "}
-                        on{" "}
-                        {new Date(blog.created_at).toLocaleDateString("en-IN", {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                        })}
-                    </p>
-
-                    {user?.username === blog.author_username && (
-                        <button
-                            onClick={editBlog}
-                            className="text-sm font-medium text-[#4988C4]"
-                        >
-                            Edit
-                        </button>
-                    )}
                 </div>
+
+                {/* Delete popup */}
+                <DeletePopup
+                    isOpen={deleteOpen}
+                    onClose={() => setDeleteOpen(false)}
+                    onConfirm={handleDelete}
+                />
 
                 {/* Body */}
                 <article className="bg-white rounded-xl p-6 shadow-sm prose max-w-none">
@@ -241,4 +276,6 @@ function BlogDetail() {
     )
 }
 
+
+export { handleDelete }
 export default BlogDetail

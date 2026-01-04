@@ -3,10 +3,14 @@ import { Link } from "react-router-dom"
 import { FaPen, FaTrash } from "react-icons/fa"
 import { blogServices } from "../auth/service"
 import BASE_URL from "../api/api"
+import DeletePopup from "../components/DeletePopup"
+import { handleDelete } from "../components/BlogDetail"
 
 function MyBlogs() {
     const [blogs, setBlogs] = useState([])
     const [loading, setLoading] = useState(true)
+
+    const [deleteOpen, setDeleteOpen] = useState(false)
 
     useEffect(() => {
         const fetchMyBlogs = async () => {
@@ -119,10 +123,12 @@ function MyBlogs() {
                                 </Link>
 
                                 <button
+                                    onClick={() => setDeleteOpen(true)}
                                     className="
                                         flex items-center gap-2
                                         text-red-500
                                         hover:text-red-600
+                                        cursor-pointer 
                                         transition
                                     "
                                 >
@@ -133,6 +139,12 @@ function MyBlogs() {
                         </div>
                     </div>
                 ))}
+
+                <DeletePopup
+                    isOpen={deleteOpen}
+                    onClose={() => setDeleteOpen(false)}
+                    onConfirm={handleDelete}
+                />
             </div>
         </div>
     )

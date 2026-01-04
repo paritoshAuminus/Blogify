@@ -3,14 +3,17 @@ import { IoIosCloudUpload } from "react-icons/io";
 import { Editor } from '@tinymce/tinymce-react';
 import { Link, useParams } from "react-router-dom";
 import { blogServices } from '../auth/service'
+import BASE_URL from "../api/api";
 
 function AddBlog() {
     const { id } = useParams()
 
     const [edit, setEdit] = useState(false);
     const [title, setTitle] = useState('');
-    const [image, setImage] = useState();
+    const [image, setImage] = useState(null);
+    const [blogImage, setBlogImage] = useState(null);
     const [body, setBody] = useState('');
+    const [error, setError] = useState([]);
 
     useEffect(() => {
         const handleEdit = async () => {
@@ -19,20 +22,21 @@ function AddBlog() {
                 const res = await blogServices.getBlog(id);
                 console.log(res)
                 setTitle(res.title);
-                setImage(res.image);
+                setBlogImage(res.image);
                 setBody(res.body);
             }
         }
         handleEdit();
     }, [])
 
-    const updateBlog = (e) => {
+    const updateBlog = async (e) => {
         e.preventDefault()
-        console.log(title)
-        console.log(image)
-        console.log(body)
+        const result = await blogServices.addBlog({ title, image, body })
+        if (result instanceof Error) setError(result)
+            console.log(error)
+        console.log(`Result :: ${result}`)
     }
-
+    
 
     return (
         <div className="min-h-screen bg-gray-100 py-10 px-4">
@@ -45,6 +49,14 @@ function AddBlog() {
 
                 {/* Form */}
                 <form onSubmit={updateBlog} className="space-y-6">
+                    {/* already existing image */}
+                    <div className="flex justify-center items-center object-cover object-fit">
+                        {blogImage &&
+                            <img
+                                src={blogImage}
+                                alt="Preview image"
+                                className="size-64" />}
+                    </div>
 
                     {/* Title */}
                     <div>
@@ -78,17 +90,17 @@ function AddBlog() {
                         </div>
                     </div>
 
-                    {/* Image Preview */}
+                    {/* Image Preview for previously uploaded image */}
                     <div className="border rounded-lg bg-gray-50 h-48 w-96 flex items-center justify-center text-gray-400 text-sm">
-                        {Image ?
+                        {image !== null ?
                             <img
-                                src={image && image}
-                                alt="Preview"
+                                src={URL.createObjectURL(image)}
                                 className="w-full h-full object-cover"
                             />
                             : "Image preview"
                         }
                     </div>
+
 
                     {/* Body */}
                     <div>
@@ -126,7 +138,6 @@ function AddBlog() {
                             {edit ? "Update Blog" : "Publish Blog"}
                         </button>
                     </div>
-
                 </form>
             </div>
         </div>

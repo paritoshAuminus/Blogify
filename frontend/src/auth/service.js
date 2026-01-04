@@ -80,10 +80,13 @@ class BlogServices {
     // Add blog (authenticated)
     //-----------------------------------------------
     async addBlog({ title, image, body }) {
-        blog = {};
+        const blog = {};
         if (title) blog.title = title;
         if (image) blog.image = image;
         if (body) blog.body = body;
+
+        console.log(blog)
+
         try {
             const response = await fetch(`${BASE_URL}api/blogs/add/`, {
                 method: 'POST',

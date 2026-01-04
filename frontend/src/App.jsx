@@ -24,7 +24,7 @@ function App() {
     }
 
     const result = await authService.getUser()
-    dispatch(login({ user: { username: result.username, email: result.email } }))
+    dispatch(login({ user: { id: result.id, username: result.username, email: result.email } }))
   }
 
   useEffect(() => {

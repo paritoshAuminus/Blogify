@@ -1,9 +1,9 @@
+import { useSelector } from "react-redux";
 import BASE_URL from "../api/api";
 
 // -------------------------------------------------
 //  AUTH SERVICES 
 // -------------------------------------------------
-
 class AuthService {
     // ------------------------------------------------
     // Register
@@ -113,6 +113,42 @@ class AuthService {
     // ------------------------------------------------
     // Refresh Token
     // ------------------------------------------------
+    async updateUser({ id, username, email }) {
+        const body = {};
+        if (!id) return new Error("User Id not found");
+
+        try {
+            const response = await fetch(`${BASE_URL}auth/update_profile/${id}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'Application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('blogifyAccess')}`
+                },
+                body: JSON.stringify({ username: username, email: email })
+            })
+
+            if (response.status === 404) {
+                return new Error(response.statusText)
+            }
+            if (response.status === 400) {
+                return new Error(response.statusText)
+            }
+            if (response.status === 403) {
+                return new Error(response.message)
+            }
+            if (response.status === 200) {
+                const result = await response.json()
+                return result
+            }
+        } catch (error) {
+            console.log("AuthService error :: updateUser ::", error)
+        }
+    }
+
+
+    // ------------------------------------------------
+    // Refresh Token
+    // ------------------------------------------------
     async refreshToken() {
         try {
             const response = await fetch(`${BASE_URL}auth/refresh/`, {
@@ -132,6 +168,7 @@ class AuthService {
             console.log("AuthService error :: refreshToken ::", error)
         }
     }
+
 
     // ------------------------------------------------
     // Logout

@@ -34,15 +34,22 @@ def registerview(request):
 @api_view(['GET'])
 def getUser(request):
     user = request.user
-    return Response({'username': user.username, 'email': user.email}, status=status.HTTP_200_OK)
+    return Response({'id': user.id, 'username': user.username, 'email': user.email}, status=status.HTTP_200_OK)
 
+# [POST] - request (body{username or email}) - response ({updated user})
 @api_view(['POST'])
 def update_user(request, pk):
     user = get_object_or_404(User, id=pk)
-    serializer = UserSerializer(data=request.data, instance=user)
+
+    if (request.user != user):
+        return Response({'message': 'Forbidden! You are not allowed to update this user'}, status=status.HTTP_403_FORBIDDEN)
+
+    serializer = UserSerializer(instance=user, data=request.data, partial=True)
 
     if serializer.is_valid():
         serializer.save()
-        return Response({serializer.data}, status=status.HTTP_200_OK)
+        return Response({'id': user.id, 'username': user.username, 'email': user.email}, status=status.HTTP_200_OK)
 
-    return Response({serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+

@@ -1,28 +1,36 @@
-import React, { useState } from "react"
-import { useForm } from "react-hook-form"
+import React, { useEffect, useState } from "react"
+import { Controller, useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import authService from "../auth/auth"
+import { login } from "../store/authSlice"
 
 function EditProfile() {
 
     const navigate = useNavigate()
     const status = useSelector(state => state.auth.status)
     const user = useSelector(state => state.auth.user)
-    const [error, setError] = useState(null)
     const dispatch = useDispatch()
 
-    const [username, setUsername] = useState(user?.username)
-    const [email, setEmail] = useState(user?.email)
-
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        if (username === '' || email === '') {
-            setError("All fields are required")
-            console.log(error)
-            return
+    const {
+        control,
+        handleSubmit,
+        formState: {
+            errors,
+            isSubmitting,
         }
-        setError(null)
+    } = useForm({
+        defaultValues: {
+            username: user.username,
+            email: user.email
+        }
+    })
+
+    const submit = async (data) => {
+        const result = await authService.updateUser({ id: user.id, username: data.username, email: data.email })
+        dispatch(login({ user: { id: result.id, username: result.username, email: result.email } }))
     }
+
 
     if (status === "unauthenticated") {
         navigate('/login')
@@ -45,7 +53,7 @@ function EditProfile() {
 
                     <div>
                         <h2 className="text-lg font-medium text-gray-800">
-                            Profile Picture
+                            {user?.username}
                         </h2>
                         <p className="text-sm text-gray-500">
                             Upload a profile photo to personalize your account
@@ -54,13 +62,13 @@ function EditProfile() {
                         <div className="flex gap-3 mt-3">
                             <button
                                 className="px-4 py-2 text-sm rounded-md bg-blue-600 text-white
-                           hover:bg-blue-700 transition"
+                           hover:bg-blue-700 transition cursor-not-allowed"
                             >
                                 Upload
                             </button>
                             <button
                                 className="px-4 py-2 text-sm rounded-md border border-gray-300
-                           text-gray-700 hover:bg-gray-100 transition"
+                           text-gray-700 hover:bg-gray-100 transition cursor-not-allowed"
                             >
                                 Remove
                             </button>
@@ -70,20 +78,35 @@ function EditProfile() {
 
                 {/* Form */}
                 <form
-                onSubmit={handleSubmit}
-                 className="space-y-6">
+                    onSubmit={handleSubmit(submit)}
+                    className="space-y-6">
 
                     {/* Username */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
                             Username
                         </label>
-                        <input
-                            type="text"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300
-                         focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        <Controller
+                            name="username"
+                            control={control}
+                            rules={{
+                                required: 'This field cannot be empty.'
+                            }}
+                            render={({ field }) => (
+                                <>
+                                    <input
+                                        {...field}
+                                        type="text"
+                                        className="w-full px-4 py-3 rounded-lg border border-gray-300
+                            focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                    {errors.username && (
+                                        <p className="text-sm text-red-500 mt-1">
+                                            {errors.username.message}
+                                        </p>
+                                    )}
+                                </>
+                            )}
                         />
                     </div>
 
@@ -92,17 +115,28 @@ function EditProfile() {
                         <label className="block text-sm font-medium text-gray-700 mb-1">
                             Email Address
                         </label>
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300
-                         focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        <Controller
+                            name="email"
+                            control={control}
+                            rules={{
+                                required: 'This field cannot be empty.'
+                            }}
+                            render={({ field }) => (
+                                <>
+                                    <input
+                                        {...field}
+                                        type="email"
+                                        className="w-full px-4 py-3 rounded-lg border border-gray-300
+                             focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                    {errors.email && (
+                                        <p className="text-sm text-red-500 mt-1">
+                                            {errors.email.message}
+                                        </p>
+                                    )}
+                                </>
+                            )}
                         />
-                    </div>
-
-                    <div>
-                        {error !== null && <p className="text-red-500">{error}</p>}
                     </div>
 
                     {/* Divider */}
@@ -110,18 +144,20 @@ function EditProfile() {
 
                     {/* Actions */}
                     <div className="flex justify-end gap-4">
-                        <button
+                        <Link
+                            to="/account"
                             className="px-6 py-2 rounded-lg border border-gray-300 text-gray-700
-                         hover:bg-gray-100 transition"
+                         hover:bg-gray-100 transition cursor-pointer"
                         >
                             Cancel
-                        </button>
+                        </Link>
 
                         <button
+                            type="submit"
                             className="px-6 py-2 rounded-lg bg-blue-600 text-white
-                         hover:bg-blue-700 transition"
+                         hover:bg-blue-700 transition cursor-pointer"
                         >
-                            Save Changes
+                            {isSubmitting ? 'Saving...' : 'Save Changes'}
                         </button>
                     </div>
 
