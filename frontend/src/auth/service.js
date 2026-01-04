@@ -44,7 +44,7 @@ class BlogServices {
 
             if (response.status === 200) {
                 const result = await response.json()
-                return result
+                return result 
             } else {
                 return new Error(response.statusText)
             }
@@ -80,22 +80,26 @@ class BlogServices {
     // Add blog (authenticated)
     //-----------------------------------------------
     async addBlog({ title, image, body }) {
-        const blog = {};
-        if (title) blog.title = title;
-        if (image) blog.image = image;
-        if (body) blog.body = body;
-
-        console.log(blog)
 
         try {
+            const formdata = new FormData()
+            formdata.append('title', title)
+            formdata.append('body', body)
+
+            if (image) {
+                formdata.append('image', image)
+            }
+
             const response = await fetch(`${BASE_URL}api/blogs/add/`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'Application/json',
                     'Authorization': `Bearer ${localStorage.getItem('blogifyAccess')}`
                 },
-                body: JSON.stringify({ blog })
+                body: formdata
             })
+
+            console.log(response)
+
             if (response.status === 400) {
                 return new Error(response.statusText)
             }

@@ -102,8 +102,8 @@ function MyBlogs() {
                                 })}
                             </p>
 
-                            <p className="text-[#0F2854]/70 mt-3 line-clamp-2">
-                                {blog.body}
+                            <p dangerouslySetInnerHTML={{__html: blog.body}} className="text-[#0F2854]/70 mt-3 line-clamp-2">
+                                {/* {blog.body} */}
                             </p>
 
                             {/* Actions */}

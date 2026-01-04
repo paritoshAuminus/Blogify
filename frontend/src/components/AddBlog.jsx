@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { IoIosCloudUpload } from "react-icons/io";
 import { Editor } from '@tinymce/tinymce-react';
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { blogServices } from '../auth/service'
 import BASE_URL from "../api/api";
 
@@ -15,12 +15,13 @@ function AddBlog() {
     const [body, setBody] = useState('');
     const [error, setError] = useState([]);
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         const handleEdit = async () => {
             if (id) {
                 setEdit(true);
                 const res = await blogServices.getBlog(id);
-                console.log(res)
                 setTitle(res.title);
                 setBlogImage(res.image);
                 setBody(res.body);
@@ -32,11 +33,9 @@ function AddBlog() {
     const updateBlog = async (e) => {
         e.preventDefault()
         const result = await blogServices.addBlog({ title, image, body })
-        if (result instanceof Error) setError(result)
-            console.log(error)
-        console.log(`Result :: ${result}`)
+        navigate('/blogs')
     }
-    
+
 
     return (
         <div className="min-h-screen bg-gray-100 py-10 px-4">
@@ -133,7 +132,7 @@ function AddBlog() {
                         <button
                             type="submit"
                             className="px-6 py-2 rounded-lg bg-blue-600 text-white 
-                         hover:bg-blue-700 transition"
+                         hover:bg-blue-700 transition cursor-pointer"
                         >
                             {edit ? "Update Blog" : "Publish Blog"}
                         </button>

@@ -165,8 +165,8 @@ function BlogDetail() {
                 />
 
                 {/* Body */}
-                <article className="bg-white rounded-xl p-6 shadow-sm prose max-w-none">
-                    {blog.body}
+                <article dangerouslySetInnerHTML={{__html:blog.body}} className="bg-white rounded-xl p-6 shadow-sm prose max-w-none">
+                    {/* Blog body */}
                 </article>
 
                 {/* Spacer */}

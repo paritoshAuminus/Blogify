@@ -35,7 +35,7 @@ function BlogCard({ blog }) {
                 </h2>
 
                 <p className="text-xs text-[#4988C4] mt-2">
-                    By {blog.author} on{" "}
+                    By {blog.author_username} on{" "}
                     {new Date(blog.created_at).toLocaleString("en-IN", {
                         day: "numeric",
                         month: "short",
