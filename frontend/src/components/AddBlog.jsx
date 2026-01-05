@@ -17,6 +17,7 @@ function AddBlog() {
 
     const navigate = useNavigate();
 
+    // populate the blog fields with data
     useEffect(() => {
         const handleEdit = async () => {
             if (id) {
@@ -31,9 +32,16 @@ function AddBlog() {
     }, [])
 
     const updateBlog = async (e) => {
-        e.preventDefault()
-        const result = await blogServices.addBlog({ title, image, body })
-        navigate('/blogs')
+        if (id) {
+            e.preventDefault()
+            const result = await blogServices.updateBlog({ id: id, content: { title: title, image: image, body: body } });
+            navigate('/my-blogs')
+        } else {
+            e.preventDefault()
+            const result = await blogServices.addBlog({ title: title, image: image, body: body });
+            console.log(result)
+            navigate('/my-blogs')
+        }
     }
 
 

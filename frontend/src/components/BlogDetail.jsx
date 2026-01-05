@@ -7,11 +7,7 @@ import { useSelector } from "react-redux"
 import { blogServices, commentServices, likeServices } from "../auth/service"
 import { useForm } from "react-hook-form"
 import DeletePopup from "./DeletePopup"
-
-const handleDelete = async () => {
-    // await blogServices.deleteBlog(id)
-    window.location.href = "/blogs"
-}
+import { handleDelete } from "./index"
 
 function BlogDetail() {
     const { id } = useParams()
@@ -32,6 +28,7 @@ function BlogDetail() {
     }
 
     const handleComment = async (data) => {
+        setAddCommentLoading(true)
         await commentServices.addComment({ blogId: id, content: data.text })
         const commentRes = await commentServices.getComments(id)
         setComments(commentRes)
@@ -55,7 +52,7 @@ function BlogDetail() {
             setCommentLoading(false)
         }
         fetchComments()
-    }, [id])
+    }, [id, handleComment])
 
     const {
         register,
@@ -71,6 +68,7 @@ function BlogDetail() {
     const deleteBlog = () => {
         setDeleteOpen(true)
     }
+
 
     if (loading) {
         return (
@@ -136,7 +134,7 @@ function BlogDetail() {
                             </button>
 
                             {/* Edit / Delete (BOTTOM) */}
-                            {user?.id === blog.author && (
+                            {status === 'authenticated' && user?.id === blog.author && (
                                 <div className="flex items-center gap-4">
                                     <button
                                         onClick={editBlog}
@@ -165,7 +163,7 @@ function BlogDetail() {
                 />
 
                 {/* Body */}
-                <article dangerouslySetInnerHTML={{__html:blog.body}} className="bg-white rounded-xl p-6 shadow-sm prose max-w-none">
+                <article dangerouslySetInnerHTML={{ __html: blog.body }} className="bg-white rounded-xl p-6 shadow-sm prose max-w-none">
                     {/* Blog body */}
                 </article>
 

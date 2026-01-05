@@ -4,7 +4,7 @@ import { FaPen, FaTrash } from "react-icons/fa"
 import { blogServices } from "../auth/service"
 import BASE_URL from "../api/api"
 import DeletePopup from "../components/DeletePopup"
-import { handleDelete } from "../components/BlogDetail"
+import { handleDelete } from "../components"
 
 function MyBlogs() {
     const [blogs, setBlogs] = useState([])
@@ -102,13 +102,13 @@ function MyBlogs() {
                                 })}
                             </p>
 
-                            <p dangerouslySetInnerHTML={{__html: blog.body}} className="text-[#0F2854]/70 mt-3 line-clamp-2">
+                            <p dangerouslySetInnerHTML={{ __html: blog.body }} className="text-[#0F2854]/70 mt-3 line-clamp-2">
                                 {/* {blog.body} */}
                             </p>
 
                             {/* Actions */}
                             <div className="flex gap-6 mt-4 text-sm">
-                                <Link 
+                                <Link
                                     to={`/edit-blog/${blog.id}`}
                                     className="
                                         flex items-center gap-2
@@ -132,14 +132,13 @@ function MyBlogs() {
                                         transition
                                     "
                                 >
-                                    <FaTrash />
                                     Delete
+                                    <FaTrash />
                                 </button>
                             </div>
                         </div>
                     </div>
                 ))}
-
                 <DeletePopup
                     isOpen={deleteOpen}
                     onClose={() => setDeleteOpen(false)}

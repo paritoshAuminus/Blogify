@@ -1,7 +1,10 @@
 import React from "react";
 
-function DeletePopup({ isOpen, onClose, onConfirm }) {
+function DeletePopup({ isOpen, onClose, onConfirm, id }) {
+
   if (!isOpen) return null;
+
+
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">

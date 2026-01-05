@@ -65,6 +65,7 @@ class BlogServices {
                     'Authorization': `Bearer ${localStorage.getItem('blogifyAccess')}`
                 }
             })
+
             if (response.status === 200) {
                 const result = await response.json()
                 return result
@@ -118,23 +119,26 @@ class BlogServices {
     async updateBlog({ id, content }) {
         try {
 
-            const payload = {};
+            const formdata = new FormData;
 
             if (content?.title) {
-                payload.title = content?.title
+                formdata.append('title', content?.title)
             }
 
             if (content?.body) {
-                payload.body = content?.body
+                formdata.append('body', content?.body)
+            }
+
+            if (content?.image) {
+                formdata.append('image', content?.image)
             }
 
             const response = await fetch(`${BASE_URL}api/blogs/update/${id}/`, {
                 method: 'PATCH',
                 headers: {
-                    'Content-Type': 'Application/json',
                     'Authorization': `Bearer ${localStorage.getItem('blogifyAccess')}`
                 },
-                body: JSON.stringify(payload)
+                body: formdata
             })
             const result = await response.json()
             if (response.status === 403) {
