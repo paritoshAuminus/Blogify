@@ -1,8 +1,33 @@
-import { Link } from "react-router-dom"
-import { useSelector } from "react-redux"
+import { Link, useNavigate } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { useForm } from "react-hook-form";
+import authService from "../auth/auth";
+import { login } from "../store/authSlice";
 
 function Signup() {
     const status = useSelector(state => state.auth.status);
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting }
+    } = useForm()
+
+    const handleSingup = async (data) => {
+        const result = await authService.register({
+            "username": data.username,
+            "email": data.email,
+            "password": data.password
+        })
+        const { loginResult, getUserResult } = await authService.login({ username: data.username, password: data.password })
+
+        if (getUserResult) {
+            dispatch(login({ user: { username: getUserResult.username, email: getUserResult.email } }))
+            navigate('/')
+        }
+    }
 
     if (status === "authenticated") {
         return (
@@ -43,7 +68,9 @@ function Signup() {
                 </div>
 
                 {/* Form */}
-                <form className="space-y-5">
+                <form
+                    onSubmit={handleSubmit(handleSingup)}
+                    className="space-y-5">
                     {/* Username */}
                     <div>
                         <label className="block text-sm font-medium text-[#0F2854] mb-1">
@@ -52,10 +79,12 @@ function Signup() {
                         <input
                             type="text"
                             placeholder="Choose a username"
+                            {...register("username", { required: 'Username is required' })}
                             className="w-full px-4 py-2 rounded-md border border-gray-300
                          focus:outline-none focus:ring-2 focus:ring-[#4988C4]
                          focus:border-[#4988C4]"
                         />
+                        {errors.username && <p className="text-red-500 text-xs mt-1 font-semibold">{errors.username.message}</p>}
                     </div>
 
                     {/* Email */}
@@ -66,10 +95,12 @@ function Signup() {
                         <input
                             type="email"
                             placeholder="Enter your email"
+                            {...register("email", { required: 'Email is required', pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i })}
                             className="w-full px-4 py-2 rounded-md border border-gray-300
                          focus:outline-none focus:ring-2 focus:ring-[#4988C4]
                          focus:border-[#4988C4]"
                         />
+                        {errors.email && <p className="text-red-500 text-xs mt-1 font-semibold">{errors.email.message}</p>}
                     </div>
 
                     {/* Password */}
@@ -80,24 +111,12 @@ function Signup() {
                         <input
                             type="password"
                             placeholder="Create a password"
+                            {...register("password", { required: 'Password is required' })}
                             className="w-full px-4 py-2 rounded-md border border-gray-300
                          focus:outline-none focus:ring-2 focus:ring-[#4988C4]
                          focus:border-[#4988C4]"
                         />
-                    </div>
-
-                    {/* Confirm Password */}
-                    <div>
-                        <label className="block text-sm font-medium text-[#0F2854] mb-1">
-                            Confirm Password
-                        </label>
-                        <input
-                            type="password"
-                            placeholder="Confirm your password"
-                            className="w-full px-4 py-2 rounded-md border border-gray-300
-                         focus:outline-none focus:ring-2 focus:ring-[#4988C4]
-                         focus:border-[#4988C4]"
-                        />
+                        {errors.password && <p className="text-red-500 text-xs mt-1 font-semibold">{errors.password.message}</p>}
                     </div>
 
                     {/* Signup Button */}
@@ -106,7 +125,7 @@ function Signup() {
                         className="w-full bg-[#1C4D8D] text-white py-2 rounded-md
                        hover:bg-[#4988C4] transition font-medium"
                     >
-                        Sign Up
+                        {isSubmitting ? 'Signing up...' : 'Sign up'}
                     </button>
                 </form>
 

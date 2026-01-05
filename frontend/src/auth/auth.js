@@ -21,16 +21,21 @@ class AuthService {
                     password: password
                 })
             })
-            if (response.status === 400) {
-                return new Error(response.message)
-            }
-            if (response.status === 409) {
-                return new Error(response.message)
-            }
+
+            console.log(response)
+
             if (response.status === 201) {
                 const result = await response.json()
                 await this.login({ username: username, password: password })
                 return result
+            }
+            if (response.status === 400) {
+                alert(response.statusText)
+                return new Error(response.message)
+            }
+            if (response.status === 409) {
+                alert(response.statusText)
+                return new Error(response.message)
             }
         } catch (error) {
             console.log("AuthService error :: register ::", error)
@@ -53,12 +58,15 @@ class AuthService {
                 })
             })
             if (response.status === 400) {
+                alert(response.statusText)
                 return new Error(response.statusText)
             }
             if (response.status === 404) {
+                alert(response.statusText)
                 return new Error(response.statusText)
             }
             if (response.status === 401) {
+                alert(`${response.statusText}. Username or password incorrect.`)
                 return new Error(response.statusText)
             }
             if (response.status === 200) {

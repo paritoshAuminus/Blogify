@@ -20,7 +20,7 @@ function App() {
 
     if (!access && !refresh) {
       dispatch(logout())
-      return
+      return null
     }
 
     const result = await authService.getUser()

@@ -52,7 +52,7 @@ function BlogDetail() {
             setCommentLoading(false)
         }
         fetchComments()
-    }, [id, handleComment])
+    }, [id])
 
     const {
         register,
@@ -125,7 +125,7 @@ function BlogDetail() {
                                 className={`
                                         flex items-center gap-2 text-base font-medium transition
                                         ${status === "authenticated"
-                                        ? "text-[#1C4D8D] hover:text-[#4988C4]"
+                                        ? "text-[#1C4D8D] hover:text-[#4988C4] cursor-pointer"
                                         : "opacity-50 cursor-not-allowed"}
                                 `}
                             >
@@ -260,7 +260,7 @@ function BlogDetail() {
                                     flex items-center gap-2 px-4 py-2 rounded-md text-sm
                                     transition
                                     ${status === "authenticated"
-                                        ? "bg-[#1C4D8D] text-white hover:bg-[#4988C4]"
+                                        ? "bg-[#1C4D8D] text-white hover:bg-[#4988C4] cursor-pointer"
                                         : "bg-gray-300 text-gray-600 cursor-not-allowed"}
                                 `}
                             >

@@ -1,10 +1,8 @@
 import React from "react";
-import { useParams } from "react-router-dom";
 
 function DeletePopup({ isOpen, onClose, onConfirm, id }) {
 
   if (!isOpen) return null;
-  console.log(id)
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
