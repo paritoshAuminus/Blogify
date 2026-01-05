@@ -1,10 +1,10 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 
 function DeletePopup({ isOpen, onClose, onConfirm, id }) {
 
   if (!isOpen) return null;
-
-
+  console.log(id)
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -33,7 +33,7 @@ function DeletePopup({ isOpen, onClose, onConfirm, id }) {
           </button>
 
           <button
-            onClick={onConfirm}
+            onClick={() => onConfirm(id)}
             className="px-4 py-2 text-sm font-medium rounded-md bg-red-500 text-white hover:bg-red-600 transition cursor-pointer"
           >
             Delete

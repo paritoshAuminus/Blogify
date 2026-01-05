@@ -99,8 +99,6 @@ class BlogServices {
                 body: formdata
             })
 
-            console.log(response)
-
             if (response.status === 400) {
                 return new Error(response.statusText)
             }

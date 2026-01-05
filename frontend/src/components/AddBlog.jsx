@@ -13,7 +13,8 @@ function AddBlog() {
     const [image, setImage] = useState(null);
     const [blogImage, setBlogImage] = useState(null);
     const [body, setBody] = useState('');
-    const [error, setError] = useState([]);
+    const [titleError, setTitleError] = useState('');
+    const [bodyError, setBodyError] = useState('');
 
     const navigate = useNavigate();
 
@@ -32,6 +33,19 @@ function AddBlog() {
     }, [])
 
     const updateBlog = async (e) => {
+        if (!title) {
+            e.preventDefault()
+            setTitleError('Title cannot be empty.')
+            return null
+        }
+        setTitleError('')
+        if (!body) {
+            e.preventDefault()
+            setBodyError('Body cannot be empty')
+            return null
+        }
+        setBodyError('')
+        
         if (id) {
             e.preventDefault()
             const result = await blogServices.updateBlog({ id: id, content: { title: title, image: image, body: body } });
@@ -39,7 +53,6 @@ function AddBlog() {
         } else {
             e.preventDefault()
             const result = await blogServices.addBlog({ title: title, image: image, body: body });
-            console.log(result)
             navigate('/my-blogs')
         }
     }
@@ -79,6 +92,7 @@ function AddBlog() {
                          focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
+                    {titleError && <p className="text-red-500 text-sm">{titleError}</p>}
 
                     {/* Image URL */}
                     <div>
@@ -126,6 +140,9 @@ function AddBlog() {
                             }}
                         />
                     </div>
+
+                    {/* Error */}
+                    {bodyError && <p className="text-red-500 text-sm">{bodyError}</p>}
 
                     {/* Actions */}
                     <div className="flex justify-end gap-4 pt-4">

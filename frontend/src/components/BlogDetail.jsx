@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { MdOutlineComment } from "react-icons/md"
 import { IoMdThumbsUp } from "react-icons/io"
 import { FaComments } from "react-icons/fa"
@@ -7,7 +7,7 @@ import { useSelector } from "react-redux"
 import { blogServices, commentServices, likeServices } from "../auth/service"
 import { useForm } from "react-hook-form"
 import DeletePopup from "./DeletePopup"
-import { handleDelete } from "./index"
+import { handleDelete } from "../pages/MyBlogs"
 
 function BlogDetail() {
     const { id } = useParams()
@@ -160,6 +160,7 @@ function BlogDetail() {
                     isOpen={deleteOpen}
                     onClose={() => setDeleteOpen(false)}
                     onConfirm={handleDelete}
+                    id={blog.id}
                 />
 
                 {/* Body */}

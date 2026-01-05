@@ -4,7 +4,12 @@ import { FaPen, FaTrash } from "react-icons/fa"
 import { blogServices } from "../auth/service"
 import BASE_URL from "../api/api"
 import DeletePopup from "../components/DeletePopup"
-import { handleDelete } from "../components"
+
+export const handleDelete = async (id) => {
+    const result = await blogServices.deleteBlog(id)
+    console.log(result)
+    window.location.href = "/my-blogs"
+}
 
 function MyBlogs() {
     const [blogs, setBlogs] = useState([])
@@ -137,13 +142,14 @@ function MyBlogs() {
                                 </button>
                             </div>
                         </div>
+                        <DeletePopup
+                            isOpen={deleteOpen}
+                            onClose={() => setDeleteOpen(false)}
+                            onConfirm={handleDelete}
+                            id={blog.id}
+                        />
                     </div>
                 ))}
-                <DeletePopup
-                    isOpen={deleteOpen}
-                    onClose={() => setDeleteOpen(false)}
-                    onConfirm={handleDelete}
-                />
             </div>
         </div>
     )
