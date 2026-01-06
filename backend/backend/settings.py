@@ -107,7 +107,11 @@ SIMPLE_JWT = {
 AUTH_USER_MODEL = 'accounts.User'
 
 # CORS
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-]
+CORS_ALLOWED_ORIGINS = os.environ.get("CORS_ALLOWED_ORIGINS", "").split(",")
+CORS_ALLOW_CREDENTIALS = True
+
+# CSRF
+CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",")
+
+
 CORS_ALLOW_CREDENTIALS = True
