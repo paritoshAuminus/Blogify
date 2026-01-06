@@ -8,7 +8,7 @@ import DeletePopup from "../components/DeletePopup"
 export const handleDelete = async (id) => {
     const result = await blogServices.deleteBlog(id)
     console.log(result)
-    window.location.href = "/my-blogs"
+    window.location.href = "/blogs"
 }
 
 function MyBlogs() {
