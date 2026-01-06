@@ -21,7 +21,7 @@ function Login() {
         const { loginResult, getUserResult } = await authService.login({ username: data.username, password: data.password })
 
         if (getUserResult) {
-            dispatch(login({ user: { username: getUserResult.username, email: getUserResult.email } }))
+            dispatch(login({ user: { id: getUserResult.id, username: getUserResult.username, email: getUserResult.email } }))
             navigate('/')
         }
     }

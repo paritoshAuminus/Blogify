@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Link, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { MdOutlineComment } from "react-icons/md"
 import { IoMdThumbsUp } from "react-icons/io"
 import { FaComments } from "react-icons/fa"
@@ -20,6 +20,8 @@ function BlogDetail() {
 
     const status = useSelector((state) => state.auth.status)
     const user = useSelector((state) => state.auth.user)
+
+    const navigate = useNavigate()
 
     const handleLike = async () => {
         await likeServices.toggleLike(id)
@@ -62,7 +64,7 @@ function BlogDetail() {
     } = useForm()
 
     const editBlog = () => {
-        window.location.href = `/edit-blog/${id}`
+        navigate(`/edit-blog/${id}`)
     }
 
     const deleteBlog = () => {
@@ -134,7 +136,7 @@ function BlogDetail() {
                             </button>
 
                             {/* Edit / Delete (BOTTOM) */}
-                            {status === 'authenticated' && user?.id === blog.author && (
+                            {user?.id === blog.author && (
                                 <div className="flex items-center gap-4">
                                     <button
                                         onClick={editBlog}
@@ -220,7 +222,7 @@ function BlogDetail() {
                             Add a comment
                         </h3>
 
-                        {!status && (
+                        {status === 'unauthenticated' && (
                             <span className="text-sm text-[#1C4D8D]">
                                 Login to comment
                             </span>
