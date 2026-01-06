@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
@@ -29,6 +28,7 @@ function EditProfile() {
     const submit = async (data) => {
         const result = await authService.updateUser({ id: user.id, username: data.username, email: data.email })
         dispatch(login({ user: { id: result.id, username: result.username, email: result.email } }))
+        navigate('/account')
     }
 
 
