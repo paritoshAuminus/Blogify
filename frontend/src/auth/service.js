@@ -11,7 +11,7 @@ class BlogServices {
     //-----------------------------------------------
     async getBlogs() {
         try {
-            const response = await fetch(`${BASE_URL}api/blogs/`, {
+            const response = await fetch(`${BASE_URL}api/blogs/v2/`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'Application/json'
@@ -44,7 +44,7 @@ class BlogServices {
 
             if (response.status === 200) {
                 const result = await response.json()
-                return result 
+                return result
             } else {
                 return new Error(response.statusText)
             }
@@ -58,7 +58,7 @@ class BlogServices {
     //-----------------------------------------------
     async getMyBlogs() {
         try {
-            const response = await fetch(`${BASE_URL}api/blogs/myblogs/`, {
+            const response = await fetch(`${BASE_URL}api/blogs/myblogs/v2/`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'Application/json',
@@ -177,6 +177,21 @@ class BlogServices {
             }
         } catch (error) {
             console.log("Services error :: deleteBlog ::", error)
+        }
+    }
+
+    async pageFetcher(url) {
+        const token = localStorage.getItem('blogifyAccess')
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        try {
+            const response = await fetch(url, { headers });
+            const res = await response.json()
+            return res
+
+        } catch (error) {
+            console.log("Services error :: onPageChange ::", error)
         }
     }
 }

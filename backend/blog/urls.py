@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import BlogDetailView, BlogListView, ListComments, ListLikes
+from .views import BlogDetailView, BlogListView, BlogListViewV2, ListComments, ListLikes
 from . import views
 
 urlpatterns = [
@@ -25,5 +25,9 @@ urlpatterns = [
     # public
     path('blogs/<int:pk>/likes/', ListLikes.as_view()),
     # authenticated
-    path('blogs/<int:pk>/likes/toggle/', views.toggle_likes)
+    path('blogs/<int:pk>/likes/toggle/', views.toggle_likes),
+
+    # API VERSION 2 - PAGINATION ADDED
+    path('blogs/v2/', BlogListViewV2.as_view()),
+    path('blogs/myblogs/v2/', views.my_blogs_v2),
 ]

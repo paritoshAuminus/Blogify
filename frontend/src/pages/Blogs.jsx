@@ -3,9 +3,10 @@ import { Link } from "react-router-dom"
 import BASE_URL from "../api/api"
 import { BlogCard } from "../components"
 import { blogServices } from "../auth/service"
+import { GrFormNextLink, GrFormPreviousLink } from "react-icons/gr";
 
 function Blogs() {
-  const [blogs, setBlogs] = useState([])
+  const [blogs, setBlogs] = useState({})
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -16,6 +17,11 @@ function Blogs() {
     }
     fetchBlogs()
   }, [])
+
+  const onPageChange = async (url) => {
+    const res = await blogServices.pageFetcher(url)
+    setBlogs(res)
+  }
 
   if (loading) {
     return (
@@ -42,12 +48,33 @@ function Blogs() {
 
         {/* Blog grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {blogs.map(blog => (
+          {blogs.results?.map(blog => (
             BlogCard({ blog })
           ))}
         </div>
+
+        {/* Pagination */}
+        <div className="flex justify-center mt-10 space-x-4">
+          {blogs.previous && (
+            <button
+              onClick={() => onPageChange(blogs.previous)}
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer"
+            >
+              <GrFormPreviousLink />
+            </button>
+          )}
+          {blogs.next && (
+            <button
+              onClick={() => onPageChange(blogs.next)}
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer"
+            >
+              <GrFormNextLink />
+            </button>
+          )}
+        </div>
       </div>
     </div>
+
   )
 }
 

@@ -6,6 +6,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.generics import get_object_or_404
+from .pagination import BlogPagination
 
 
 # -----------------------------------------
@@ -17,6 +18,14 @@ class BlogListView(ListAPIView):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
     permission_classes = [AllowAny]
+
+# [GET] - get a list of all blogs
+# v2 - Pagination added
+class BlogListViewV2(ListAPIView):
+    queryset = Blog.objects.all()
+    serializer_class = BlogSerializer
+    permission_classes = [AllowAny]
+    pagination_class = BlogPagination
 
 
 # [GET] - get one blog
@@ -33,6 +42,21 @@ def my_blogs(request):
     myblogs = blogs.filter(author=request.user)
     serializer = BlogSerializer(myblogs, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+# v2 - pagination added
+@api_view(['GET'])
+def my_blogs_v2(request):
+    myblogs = Blog.objects.filter(author=request.user)
+
+    paginator = BlogPagination()
+    paginator.page_size = 4
+    paginator.page_size_query_param = 'my_page_size'
+    paginator.max_page_size = 10
+
+    page = paginator.paginate_queryset(myblogs, request)
+
+    serializer = BlogSerializer(page, many=True)
+    return paginator.get_paginated_response(serializer.data)
 
 
 # [POST] - request(blog data) - authentication(JWT) - response(Blog created)

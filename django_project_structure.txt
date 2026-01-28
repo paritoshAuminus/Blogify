@@ -1,0 +1,83 @@
+Blogify/
+├── Upgrade.md
+├── backend/
+│   ├── README.md
+│   ├── accounts/
+│   │   ├── __init__.py
+│   │   ├── __pycache__/
+│   │   │   ├── __init__.cpython-314.pyc
+│   │   │   ├── admin.cpython-314.pyc
+│   │   │   ├── apps.cpython-314.pyc
+│   │   │   ├── models.cpython-314.pyc
+│   │   │   ├── serializers.cpython-314.pyc
+│   │   │   ├── urls.cpython-314.pyc
+│   │   │   └── views.cpython-314.pyc
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── migrations/
+│   │   │   ├── 0001_initial.py
+│   │   │   ├── __init__.py
+│   │   │   └── __pycache__/
+│   │   │       ├── 0001_initial.cpython-314.pyc
+│   │   │       └── __init__.cpython-314.pyc
+│   │   ├── models.py
+│   │   ├── serializers.py
+│   │   ├── tests.py
+│   │   ├── urls.py
+│   │   └── views.py
+│   ├── backend/
+│   │   ├── __init__.py
+│   │   ├── __pycache__/
+│   │   │   ├── __init__.cpython-314.pyc
+│   │   │   ├── settings.cpython-314.pyc
+│   │   │   ├── urls.cpython-314.pyc
+│   │   │   └── wsgi.cpython-314.pyc
+│   │   ├── asgi.py
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   └── wsgi.py
+│   ├── blog/
+│   │   ├── __init__.py
+│   │   ├── __pycache__/
+│   │   │   ├── __init__.cpython-314.pyc
+│   │   │   ├── admin.cpython-314.pyc
+│   │   │   ├── apps.cpython-314.pyc
+│   │   │   ├── models.cpython-314.pyc
+│   │   │   ├── serializers.cpython-314.pyc
+│   │   │   ├── urls.cpython-314.pyc
+│   │   │   └── views.cpython-314.pyc
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── migrations/
+│   │   │   ├── 0001_initial.py
+│   │   │   ├── 0002_rename_comments_comment_rename_likes_like.py
+│   │   │   ├── 0003_alter_like_blog.py
+│   │   │   ├── __init__.py
+│   │   │   └── __pycache__/
+│   │   │       ├── 0001_initial.cpython-314.pyc
+│   │   │       ├── 0002_rename_comments_comment_rename_likes_like.cpython-314.pyc
+│   │   │       ├── 0003_alter_like_blog.cpython-314.pyc
+│   │   │       └── __init__.cpython-314.pyc
+│   │   ├── models.py
+│   │   ├── serializers.py
+│   │   ├── tests.py
+│   │   ├── urls.py
+│   │   └── views.py
+│   ├── db.sqlite3
+│   ├── manage.py
+│   ├── media/
+│   │   └── blogs/
+│   │       ├── Redux-Toolkit.png
+│   │       ├── Redux-Toolkit_GPqp4zG.png
+│   │       ├── What-Is-JavaScript-Used-For.jpg
+│   │       ├── bulb.jpg
+│   │       ├── django.jpg
+│   │       ├── materialui.jpg
+│   │       ├── oil.jpg
+│   │       ├── pythonfeatured-1200x675.jpg
+│   │       ├── react.png
+│   │       ├── showcase.webp
+│   │       └── table.jpeg
+│   └── requirements.txt
+├── django_project_structure.txt
+└── test.py
