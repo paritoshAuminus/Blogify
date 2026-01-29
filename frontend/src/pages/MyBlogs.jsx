@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { FaPen, FaTrash } from "react-icons/fa"
 import { blogServices } from "../auth/service"
 import BASE_URL from "../api/api"
 import DeletePopup from "../components/DeletePopup"
 
 export const handleDelete = async (id) => {
+
+    const navigate = useNavigate()
+
     const result = await blogServices.deleteBlog(id)
     console.log(result)
-    window.location.href = "/blogs"
+    // window.location.href = "/blogs"
+    navigate('/blogs')
 }
 
 function MyBlogs() {

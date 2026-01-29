@@ -116,5 +116,13 @@ CORS_ALLOW_CREDENTIALS = True
 # CSRF
 CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",")
 
-
 CORS_ALLOW_CREDENTIALS = True
+
+# Cache configurations
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-blog-cache',
+    }
+}
+

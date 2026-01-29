@@ -5,8 +5,10 @@
 | Method | Endpoint           | Access     |
 | ------ | ------------------ | ---------- |
 | GET    | `/api/blogs/`      | Public     |
+| GET    | `/api/blogs/v2/`   | Public     |
 | GET    | `/api/blogs/<id>/` | Public     |
-| POST   | `/api/blogs/`      | Auth       |
+| POST   | `/api/myblogs/`    | Auth       |
+| POST   | `/api/myblogs/v2/` | Auth       |
 | PUT    | `/api/blogs/<id>/` | Owner only |
 | DELETE | `/api/blogs/<id>/` | Owner only |
 
