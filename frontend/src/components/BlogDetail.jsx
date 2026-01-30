@@ -7,7 +7,6 @@ import { useSelector } from "react-redux"
 import { blogServices, commentServices, likeServices } from "../auth/service"
 import { useForm } from "react-hook-form"
 import DeletePopup from "./DeletePopup"
-import { handleDelete } from "../pages/MyBlogs"
 
 function BlogDetail() {
     const { id } = useParams()
@@ -71,6 +70,11 @@ function BlogDetail() {
         setDeleteOpen(true)
     }
 
+    const handleDelete = async (id) => {
+        const result = await blogServices.deleteBlog(id)
+        // window.location.href = "/blogs"
+        navigate('/blogs')
+    }
 
     if (loading) {
         return (
@@ -277,6 +281,4 @@ function BlogDetail() {
     )
 }
 
-
-export { handleDelete }
 export default BlogDetail

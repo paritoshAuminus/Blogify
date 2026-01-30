@@ -7,8 +7,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.generics import get_object_or_404
 from .pagination import BlogPagination
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
 
 # -----------------------------------------
 # BLOG CRUD VIEWS
@@ -28,10 +26,6 @@ class BlogListViewV2(ListAPIView):
     permission_classes = [AllowAny]
     pagination_class = BlogPagination
 
-    @method_decorator(cache_page(60 * 60))
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
-
 
 # [GET] - get one blog
 class BlogDetailView(RetrieveAPIView):
@@ -49,7 +43,6 @@ def my_blogs(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 # v2 - pagination added, caching added
-@cache_page(60 * 10)
 @api_view(['GET'])
 def my_blogs_v2(request):
     myblogs = Blog.objects.filter(author=request.user)

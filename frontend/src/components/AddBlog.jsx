@@ -3,7 +3,6 @@ import { IoIosCloudUpload } from "react-icons/io";
 import { Editor } from '@tinymce/tinymce-react';
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { blogServices } from '../auth/service'
-import BASE_URL from "../api/api";
 
 function AddBlog() {
     const { id } = useParams()
@@ -112,7 +111,7 @@ function AddBlog() {
                     </div>
 
                     {/* Image Preview for previously uploaded image */}
-                    <div className="border rounded-lg bg-gray-50 h-48 w-96 flex items-center justify-center text-gray-400 text-sm">
+                    <div className="border rounded-lg bg-gray-50 h-36 w-full md:h-48 md:w-96 flex items-center justify-center text-gray-400 text-sm">
                         {image !== null ?
                             <img
                                 src={URL.createObjectURL(image)}

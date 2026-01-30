@@ -5,19 +5,10 @@ import { blogServices } from "../auth/service"
 import BASE_URL from "../api/api"
 import DeletePopup from "../components/DeletePopup"
 
-export const handleDelete = async (id) => {
-
-    const navigate = useNavigate()
-
-    const result = await blogServices.deleteBlog(id)
-    console.log(result)
-    // window.location.href = "/blogs"
-    navigate('/blogs')
-}
-
 function MyBlogs() {
     const [blogs, setBlogs] = useState([])
     const [loading, setLoading] = useState(true)
+    const navigate = useNavigate()
 
     const [deleteOpen, setDeleteOpen] = useState(false)
 
@@ -34,6 +25,12 @@ function MyBlogs() {
     const onPageChange = async (url) => {
         const res = await blogServices.pageFetcher(url)
         setBlogs(res)
+    }
+
+    const handleDelete = async (id) => {
+        const result = await blogServices.deleteBlog(id)
+        // window.location.href = "/blogs"
+        navigate('/blogs')
     }
 
     if (loading) {
