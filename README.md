@@ -27,7 +27,7 @@ A full stack blog application deployed on **vercel** and **render** created by *
 - Django
 - Django REST Framework
 - JWT Authentication
-- Django Caching
+- Pagination
 
 ### Infrastructure
 - Vercel (frontend deployment)
