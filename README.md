@@ -15,6 +15,13 @@ A full stack blog application deployed on **vercel** and **render** created by *
 - Global state handling with **redux**
 - Deployed frotend and backend
 
+## Live Demo
+
+- **Backend** - [Render](https://blogify-r0zw.onrender.com)
+- **Frontend** - [Vercel](https://blogify-gamma-henna.vercel.app)
+
+> **NOTE:** Please let the backend boot completely upon visiting the link before loading the frontend. Use demo account with username `demo` and password `demopass` to surf the application. Also if you decide to visit, comment on any blog with your name and text **`"I was here"`**
+
 ## Tech Stack
 
 ### Frontend
