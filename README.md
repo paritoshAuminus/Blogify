@@ -22,6 +22,39 @@ A full stack blog application deployed on **vercel** and **render** created by *
 
 > **NOTE:** Please let the backend boot completely upon visiting the link before loading the frontend. Use demo account with username `demo` and password `demopass` to surf the application. Also if you decide to visit, comment on any blog with your name and text **`"I was here"`**
 
+## Screenshots
+
+<!-- ![Home Page](assets/home.png)
+![Blogs Page](assets/blogs.png)
+![Personal Blogs](assets/my_blogs.png)
+![Comment Section](assets/comments.png)
+![Account Page](assets/account.png) -->
+
+<p align="center">
+  <img src="assets/home.png" width="800" />
+  <p align="center">Classy Home Page</p>
+</p>
+<hr/>
+<p align="center">
+  <img src="assets/blogs.png" width="800" />
+  <p align="center" >Visit Blogs</p>
+</p>
+<hr/>
+<p align="center">
+  <img src="assets/my_blogs.png" width="800" />
+  <p align="center">Handle Your Personal Blogs</p>
+</p>
+<hr/>
+<p align="center">
+  <img src="assets/comments.png" width="800" />
+  <p align="center">Interact with people online</p>
+</p>
+<hr/>
+<p align="center">
+  <img src="assets/account.png" width="800" />
+  <p align="center">Manage Your Account</p>
+</p>
+
 ## Tech Stack
 
 ### Frontend
