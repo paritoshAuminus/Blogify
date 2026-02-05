@@ -20,15 +20,9 @@ A full stack blog application deployed on **vercel** and **render** created by *
 - **Backend** - [Render](https://blogify-r0zw.onrender.com)
 - **Frontend** - [Vercel](https://blogify-gamma-henna.vercel.app)
 
-> **NOTE:** Please let the backend boot completely upon visiting the link before loading the frontend. Use demo account with username `demo` and password `demopass` to surf the application. Also if you decide to visit, comment on any blog with your name and text **`"I was here"`**
+> **NOTE:** Please let the backend boot completely upon visiting the link before loading the frontend. Also if you decide to visit, comment on any blog with your name and text **`"I was here"`**. Please keep in mind that Demo **database goes down** periodically due to free-tier hosting on render and Neon.
 
 ## Screenshots
-
-<!-- ![Home Page](assets/home.png)
-![Blogs Page](assets/blogs.png)
-![Personal Blogs](assets/my_blogs.png)
-![Comment Section](assets/comments.png)
-![Account Page](assets/account.png) -->
 
 <p align="center">
   <img src="assets/home.png" width="800" />
